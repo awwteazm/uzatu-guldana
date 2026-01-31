@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Guldana - Қыз ұзату</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        /* Фоновое видео для всей страницы */
+        #background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -3;
+        }
+        
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: -2;
+        }
+        
+        body { 
+            font-family: 'Cormorant Garamond', 'Georgia', serif; 
+            color: #ddadaf;
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+        }
+
+        /* Первая секция с карточкой - адаптивная */
+        .hero-card {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            color: #fff;
+            padding: 20px;
+        }
+        .hero-card .card {
+            background: rgba(232, 199, 200, 0.15);
+            backdrop-filter: blur(8px);
+            padding: 30px 20px;
+            border-radius: 20px;
+            text-align: center;
+            width: 90%;
+            max-width: 420px;
+            border: 1px solid rgba(255,255,255,0.2);
+            margin: 20px;
+        }
+        .hero-card .title { 
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(20px, 5vw, 26px); /* Адаптивный размер шрифта */
+            letter-spacing: 3px; 
+            margin-bottom: 20px;
+            color: #f8e3c1;
+        }
+        .hero-card .name { 
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(36px, 10vw, 56px); /* Адаптивный размер имени */
+            font-weight: 700; 
+            margin: 20px 0;
+            color: #e8c7c8;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            line-height: 1.2;
+        }
+        .hero-card .date { 
+            margin-top: 25px; 
+            font-size: clamp(20px, 5vw, 28px); 
+            opacity: 0.9; 
+        }
+
+        /* Автовоспроизведение аудио (скрыто) */
+        #auto-music {
+            display: none;
+        }
+
+        /* Общие секции - адаптивные */
+        section { 
+            padding: clamp(40px, 10vw, 80px) 5%;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Для больших экранов */
+        @media (min-width: 768px) {
+            section {
+                padding: 80px 15%;
+            }
+            .hero-card .card {
+                padding: 50px 40px;
+            }
+        }
+        
+        section h2 { 
+            font-family: 'Playfair Display', serif; 
+            font-size: clamp(24px, 6vw, 32px);
+            text-align: center; 
+            margin-bottom: 30px;
+            color: #e8c7c8;
+            line-height: 1.3;
+        }
+
+        /* Фото-рулетка адаптивная */
+        .photo-roulette { 
+            padding: 40px 5%; 
+            background: rgba(241, 232, 223, 0.85); 
+            overflow: hidden; 
+        }
+        .photo-roulette h2 { 
+            font-size: clamp(22px, 5vw, 28px); 
+            margin-bottom: 30px;
+            color: #5a4a4a;
+        }
+        .slider { 
+            position: relative; 
+            width: 100%; 
+            overflow: hidden; 
+        }
+        .slide-track { 
+            display: flex; 
+            width: calc(180px * 14); /* Увеличил для плавности на мобильных */
+            animation: scroll 40s linear infinite; 
+        }
+        .slide-track img {
+            width: 180px; /* Меньше на мобильных */
+            height: 135px; /* Сохраняем пропорции */
+            object-fit: cover;
+            border-radius: 12px; 
+            margin: 0 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        
+        @media (min-width: 768px) {
+            .slide-track {
+                width: calc(250px * 10);
+            }
+            .slide-track img {
+                width: 250px;
+                height: 180px;
+                margin: 0 15px;
+            }
+        }
+        
+        @keyframes scroll { 
+            0% { transform: translateX(0); } 
+            100% { transform: translateX(calc(-180px * 7)); } 
+        }
+        
+        @media (min-width: 768px) {
+            @keyframes scroll { 
+                0% { transform: translateX(0); } 
+                100% { transform: translateX(calc(-250px * 5)); } 
+            }
+        }
+
+        /* Секция родителей адаптивная */
+        .parents-section {
+            padding: 40px 5%;
+            background: rgba(255, 255, 255, 0.85);
+            text-align: center;
+            margin: 20px;
+            border-radius: 15px;
+        }
+        
+        @media (min-width: 768px) {
+            .parents-section {
+                padding: 60px 15%;
+                margin: 0;
+            }
+        }
+        
+        .parents-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        .parents-photo {
+            width: clamp(150px, 40vw, 200px);
+            height: clamp(150px, 40vw, 200px);
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #e8c7c8;
+        }
+        .parents-wish {
+            font-size: clamp(18px, 4vw, 26px);
+            line-height: 1.6;
+            text-align: center;
+            font-style: italic;
+            color: #5a4a4a;
+            font-family: 'Cormorant Garamond', serif;
+            padding: 0 5px;
+        }
+
+        /* Ссылка "2ГИС" адаптивная */
+        .link-button {
+            display: block; 
+            width: 90%;
+            max-width: 350px;
+            margin: 40px auto; 
+            padding: 20px 15px;
+            text-align: center; 
+            background: #e8c7c8;
+            color: #5a4a4a; 
+            text-decoration: none;
+            font-size: clamp(16px, 4vw, 18px); 
+            border-radius: 12px; 
+            transition: 0.3s;
+            position: relative;
+            z-index: 1;
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            border: 2px solid rgba(90, 74, 74, 0.3);
+            line-height: 1.5;
+        }
+        .link-button:hover { 
+            background: #d8b7b8;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(232, 199, 200, 0.3);
+        }
+
+        /* Секция отсчета времени адаптивная */
+        .countdown-section {
+            padding: 30px 5%;
+            text-align: center;
+            background: rgba(232, 199, 200, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            max-width: 95%;
+            margin: 30px auto;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        @media (min-width: 768px) {
+            .countdown-section {
+                padding: 40px 15%;
+                max-width: 800px;
+            }
+        }
+        
+        .countdown-section h2 {
+            color: #e8c7c8;
+            margin-bottom: 30px;
+            font-size: clamp(22px, 5vw, 28px);
+            line-height: 1.4;
+        }
+        
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap; /* Разрешаем перенос на мобильных */
+        }
+        
+        @media (min-width: 480px) {
+            .countdown-container {
+                flex-wrap: nowrap;
+                gap: 15px;
+            }
+        }
+        
+        .countdown-box {
+            background: rgba(232, 199, 200, 0.25);
+            border: 2px solid rgba(232, 199, 200, 0.5);
+            border-radius: 12px;
+            padding: 20px 10px;
+            width: calc(50% - 10px); /* 2 в ряд на мобильных */
+            min-width: 100px;
+            max-width: 140px;
+            text-align: center;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+            flex-shrink: 0;
+            margin-bottom: 10px;
+        }
+        
+        @media (min-width: 480px) {
+            .countdown-box {
+                width: 140px;
+                margin-bottom: 0;
+                padding: 25px 15px;
+            }
+        }
+        
+        .countdown-value {
+            font-size: clamp(32px, 8vw, 42px);
+            font-weight: bold;
+            color: #fff;
+            display: block;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .countdown-label {
+            font-size: clamp(14px, 3vw, 16px);
+            color: #f0e6e7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Регистрация гостей адаптивная */
+        .registration {
+            background: rgba(241, 232, 223, 0.9); 
+            padding: 40px 5%; 
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            border-radius: 15px;
+            margin: 20px;
+        }
+        
+        @media (min-width: 768px) {
+            .registration {
+                padding: 50px 15%;
+                margin: 0;
+            }
+        }
+        
+        .registration h2 {
+            color: #5a4a4a;
+            font-size: clamp(22px, 5vw, 28px);
+        }
+        
+        .registration iframe {
+            width: 100%;
+            max-width: 100%;
+            height: 700px;
+            border-radius: 12px;
+            border: none;
+        }
+        
+        @media (min-width: 768px) {
+            .registration iframe {
+                height: 624px;
+            }
+        }
+
+        /* Мобильная навигация (если нужно будет добавить) */
+        .mobile-menu {
+            display: none;
+        }
+        
+        /* Предотвращение масштабирования на мобильных */
+        html {
+            -webkit-text-size-adjust: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Фоновое видео на всю страницу -->
+    <video autoplay muted loop id="background-video" playsinline>
+        <source src="video.MOV" type="video/mp4">
+        Ваш браузер не поддерживает видео.
+    </video>
+    <div class="video-overlay"></div>
+
+    <!-- Автовоспроизведение аудио -->
+    <audio id="auto-music" loop>
+        <source src="music.MP3" type="audio/mp3">
+        Ваш браузер не поддерживает аудио.
+    </audio>
+
+    <!-- Первая секция с карточкой и музыкой -->
+    <section class="hero-card">
+        <div class="card">
+            <div class="title">ҚЫЗ ҰЗАТУ</div>
+            <div class="name">GULDANA</div>
+            <div class="date">04 • 07 • 2026</div>
+        </div>
+        <audio id="bg-music" loop>
+            <source src="music.MP3" type="audio/mp3">
+        </audio>
+    </section>
+
+    <!-- Фото-рулетка -->
+    <section class="photo-roulette">
+        <h2>Естеліктер галереясы</h2>
+        <div class="slider">
+            <div class="slide-track">
+                <img src="1.JPG" alt="Фото 1">
+                <img src="2.JPG" alt="Фото 2">
+                <img src="3.JPG" alt="Фото 3">
+                <img src="4.JPG" alt="Фото 4">
+                <img src="5.JPG" alt="Фото 5">
+                <img src="1.JPG" alt="Фото 1">
+                <img src="2.JPG" alt="Фото 2">
+                <img src="3.JPG" alt="Фото 3">
+                <img src="4.JPG" alt="Фото 4">
+                <img src="5.JPG" alt="Фото 5">
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция родителей -->
+    <section class="parents-section">
+        <h2 style="color: #5a4a4a;">Ата-ананың тілектері</h2>
+        <div class="parents-content">
+            <img src="wedding-bg.JPG" alt="Ата-ана" class="parents-photo">
+            <div class="parents-wish">
+                Құрметті ағайын-туыс,
+                бауырлар, құда-жекжат,
+                нағашы-жиен, бөлелер,
+                дос-жаран, көршілер мен
+                әріптестер!<br><br>
+
+                СІЗДЕРДІ АЯУЛЫ ҚЫЗЫМЫЗ<br>
+                <span style="color: #9d3865; font-size: clamp(28px, 8vw, 44px); font-weight: 700;">Гүлдананың</span><br>
+                ҰЗАТУ ТОЙЫНА АРНАЛҒАН
+                САЛТАНАТТЫ АҚ
+                ДАСТАРХАНЫМЫЗДЫҢ ҚАДІРЛІ
+                ҚОНАҒЫ БОЛУҒА ШАҚЫРАМЫЗ!<br><br>
+Ізгі ниетпен, той иелері:<br>
+<span style="color: #9d3865; font-size: clamp(24px, 6vw, 38px); font-weight: 700;">Біржан-Жұлдыз</span><br><br>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ссылка "2ГИС" -->
+    <a href="https://2gis.kz/petropavlovsk/geo/70000001038401056" class="link-button" target="_blank">
+        2ГИС<br>
+        <span style="font-size: clamp(14px, 3vw, 16px); font-weight: 400;">Ресторан "Royal Palace"</span><br>
+        <span style="font-size: clamp(12px, 2.5vw, 14px); font-weight: 400;">Н.Назарбаева 248а</span>
+    </a>
+
+    <!-- Секция отсчета времени -->
+    <section class="countdown-section">
+        <h2>Басталу уақыты 16:00<br><br>Тойға дейін қалған уақыт</h2>
+        <div class="countdown-container">
+            <div class="countdown-box">
+                <span id="days" class="countdown-value">00</span>
+                <span class="countdown-label">Күн</span>
+            </div>
+            <div class="countdown-box">
+                <span id="hours" class="countdown-value">00</span>
+                <span class="countdown-label">Сағат</span>
+            </div>
+            <div class="countdown-box">
+                <span id="minutes" class="countdown-value">00</span>
+                <span class="countdown-label">Минут</span>
+            </div>
+            <div class="countdown-box">
+                <span id="seconds" class="countdown-value">00</span>
+                <span class="countdown-label">Секунд</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Регистрация гостей -->
+    <section class="registration">
+        <h2>Тойға келесіз бе?</h2>
+        <div style="width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch;">
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSc_d6xUTYHBwQet4nmK8E8TBpmJEiPI_qWk8dwcgoGdHu_xgA/viewform?embedded=true" width="640" height="700" frameborder="0" marginheight="0" marginwidth="0">Загрузка…</iframe>
+        </div>
+    </section>
+
+    <script>
+        // Улучшенное автовоспроизведение музыки
+        document.addEventListener('DOMContentLoaded', function() {
+            const audio = document.getElementById('auto-music');
+            
+            // Настройка аудио для лучшего автовоспроизведения
+            audio.muted = false;
+            audio.volume = 0.5;
+            
+            // Попытка воспроизведения с задержкой
+            setTimeout(function() {
+                const playPromise = audio.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.catch(function(error) {
+                        console.log("Автовоспроизведение заблокировано, ждем взаимодействия");
+                        
+                        // Включаем при любом клике на странице
+                        document.body.addEventListener('click', function musicStarter() {
+                            audio.play().then(function() {
+                                console.log("Музыка запущена после клика");
+                                document.body.removeEventListener('click', musicStarter);
+                            }).catch(function(err) {
+                                console.log("Ошибка воспроизведения после клика:", err);
+                            });
+                        });
+                    }).then(function() {
+                        console.log("Музыка успешно запущена автоматически");
+                    });
+                }
+            }, 1000);
+            
+            // Запуск отсчета времени
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+            
+            // Оптимизация для мобильных устройств
+            if ('ontouchstart' in window) {
+                // Отключаем hover эффекты на тач-устройствах
+                document.querySelectorAll('*').forEach(el => {
+                    el.style.cursor = 'default';
+                });
+            }
+        });
+
+        // Функция отсчета времени
+        function updateCountdown() {
+            const eventDate = new Date('July 4, 2026 16:00:00').getTime();
+            const now = new Date().getTime();
+            const timeLeft = eventDate - now;
+            
+            if (timeLeft > 0) {
+                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                
+                document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            } else {
+                document.querySelector('.countdown-section h2').innerHTML = "Той басталды!";
+                document.querySelector('.countdown-container').innerHTML = '<div style="font-size: clamp(20px, 5vw, 24px); color: #e8c7c8; font-family: \'Playfair Display\', serif;">🎉 Құтты болсын! 🎉</div>';
+            }
+        }
+        
+        // Оптимизация для iOS
+        if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
+            document.querySelector('video').setAttribute('playsinline', '');
+            document.querySelector('video').setAttribute('webkit-playsinline', '');
+        }
+    </script>
+</body>
+</html>
