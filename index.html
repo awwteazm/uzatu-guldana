@@ -8,7 +8,6 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        /* Фоновое видео для всей страницы */
         #background-video {
             position: fixed;
             top: 0;
@@ -37,7 +36,6 @@
             min-height: 100vh;
         }
 
-        /* Первая секция с карточкой - адаптивная */
         .hero-card {
             min-height: 100vh;
             display: flex;
@@ -60,14 +58,14 @@
         }
         .hero-card .title { 
             font-family: 'Playfair Display', serif;
-            font-size: clamp(20px, 5vw, 26px); /* Адаптивный размер шрифта */
+            font-size: clamp(20px, 5vw, 26px);
             letter-spacing: 3px; 
             margin-bottom: 20px;
             color: #f8e3c1;
         }
         .hero-card .name { 
             font-family: 'Playfair Display', serif;
-            font-size: clamp(36px, 10vw, 56px); /* Адаптивный размер имени */
+            font-size: clamp(36px, 10vw, 56px);
             font-weight: 700; 
             margin: 20px 0;
             color: #e8c7c8;
@@ -80,19 +78,16 @@
             opacity: 0.9; 
         }
 
-        /* Автовоспроизведение аудио (скрыто) */
         #auto-music {
             display: none;
         }
 
-        /* Общие секции - адаптивные */
         section { 
             padding: clamp(40px, 10vw, 80px) 5%;
             position: relative;
             z-index: 1;
         }
         
-        /* Для больших экранов */
         @media (min-width: 768px) {
             section {
                 padding: 80px 15%;
@@ -111,7 +106,6 @@
             line-height: 1.3;
         }
 
-        /* Фото-рулетка адаптивная */
         .photo-roulette { 
             padding: 40px 5%; 
             background: rgba(241, 232, 223, 0.85); 
@@ -129,12 +123,12 @@
         }
         .slide-track { 
             display: flex; 
-            width: calc(180px * 14); /* Увеличил для плавности на мобильных */
+            width: calc(180px * 14);
             animation: scroll 40s linear infinite; 
         }
         .slide-track img {
-            width: 180px; /* Меньше на мобильных */
-            height: 135px; /* Сохраняем пропорции */
+            width: 180px;
+            height: 135px;
             object-fit: cover;
             border-radius: 12px; 
             margin: 0 10px;
@@ -164,7 +158,6 @@
             }
         }
 
-        /* Секция родителей адаптивная */
         .parents-section {
             padding: 40px 5%;
             background: rgba(255, 255, 255, 0.85);
@@ -205,7 +198,6 @@
             padding: 0 5px;
         }
 
-        /* Ссылка "2ГИС" адаптивная */
         .link-button {
             display: block; 
             width: 90%;
@@ -232,7 +224,6 @@
             box-shadow: 0 10px 20px rgba(232, 199, 200, 0.3);
         }
 
-        /* Секция отсчета времени адаптивная */
         .countdown-section {
             padding: 30px 5%;
             text-align: center;
@@ -262,7 +253,7 @@
             display: flex;
             justify-content: center;
             gap: 10px;
-            flex-wrap: wrap; /* Разрешаем перенос на мобильных */
+            flex-wrap: wrap; 
         }
         
         @media (min-width: 480px) {
@@ -277,7 +268,7 @@
             border: 2px solid rgba(232, 199, 200, 0.5);
             border-radius: 12px;
             padding: 20px 10px;
-            width: calc(50% - 10px); /* 2 в ряд на мобильных */
+            width: calc(50% - 10px);
             min-width: 100px;
             max-width: 140px;
             text-align: center;
@@ -310,7 +301,6 @@
             letter-spacing: 1px;
         }
 
-        /* Регистрация гостей адаптивная */
         .registration {
             background: rgba(241, 232, 223, 0.9); 
             padding: 40px 5%; 
@@ -347,32 +337,27 @@
             }
         }
 
-        /* Мобильная навигация (если нужно будет добавить) */
         .mobile-menu {
             display: none;
         }
         
-        /* Предотвращение масштабирования на мобильных */
         html {
             -webkit-text-size-adjust: 100%;
         }
     </style>
 </head>
 <body>
-    <!-- Фоновое видео на всю страницу -->
     <video autoplay muted loop id="background-video" playsinline>
         <source src="video.MOV" type="video/mp4">
         Ваш браузер не поддерживает видео.
     </video>
     <div class="video-overlay"></div>
 
-    <!-- Автовоспроизведение аудио -->
     <audio id="auto-music" loop>
         <source src="music.mp3" type="audio/mp3">
         Ваш браузер не поддерживает аудио.
     </audio>
 
-    <!-- Первая секция с карточкой и музыкой -->
     <section class="hero-card">
         <div class="card">
             <div class="title">ҚЫЗ ҰЗАТУ</div>
@@ -384,7 +369,6 @@
         </audio>
     </section>
 
-    <!-- Фото-рулетка -->
     <section class="photo-roulette">
         <h2>Естеліктер галереясы</h2>
         <div class="slider">
@@ -403,7 +387,6 @@
         </div>
     </section>
 
-    <!-- Секция родителей -->
     <section class="parents-section">
         <h2 style="color: #5a4a4a; font-family: 'Cormorant Garamond', serif; font-size: clamp(28px, 8vw, 44px)">Ата-ананың тілектері</h2>
         <div class="parents-content">
@@ -427,14 +410,12 @@
         </div>
     </section>
 
-    <!-- Ссылка "2ГИС" -->
     <a href="https://2gis.kz/petropavlovsk/geo/70000001038401056" class="link-button" target="_blank">
         2ГИС<br>
-        <span style="font-size: clamp(14px, 3vw, 16px); font-weight: 400;">Ресторан "Royal Palace"</span><br>
-        <span style="font-size: clamp(12px, 2.5vw, 14px); font-weight: 400;">Н.Назарбаева 248а</span>
+        <span style="font-size: clamp(18px, 4vw, 20px); font-weight: 400;">Ресторан "Royal Palace"</span><br>
+        <span style="font-size: clamp(14px, 2.5vw, 18px); font-weight: 400;">Н.Назарбаева 248а</span>
     </a>
 
-    <!-- Секция отсчета времени -->
     <section class="countdown-section">
         <h2 style="font-family: 'Cormorant Garamond', serif;font-size: clamp(28px, 8vw, 44px)">Басталу уақыты 16:00<br>Тойға дейін қалған уақыт</h2>
         <div class="countdown-container">
@@ -457,24 +438,21 @@
         </div>
     </section>
 
-    <!-- Регистрация гостей -->
     <section class="registration">
-        <h2 style="font-family: 'Cormorant Garamond', serif;">Тойға келесіз бе?</h2>
+        <h2 style="font-family: 'Cormorant Garamond', serif; font-size: clamp(28px, 8vw, 44px);">Тойға келесіз бе?</h2>
         <div style="width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch;">
             <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSc_d6xUTYHBwQet4nmK8E8TBpmJEiPI_qWk8dwcgoGdHu_xgA/viewform?embedded=true" width="640" height="700" frameborder="0" marginheight="0" marginwidth="0">Загрузка…</iframe>
         </div>
     </section>
 
     <script>
-        // Улучшенное автовоспроизведение музыки
+
         document.addEventListener('DOMContentLoaded', function() {
             const audio = document.getElementById('auto-music');
             
-            // Настройка аудио для лучшего автовоспроизведения
             audio.muted = false;
             audio.volume = 0.5;
             
-            // Попытка воспроизведения с задержкой
             setTimeout(function() {
                 const playPromise = audio.play();
                 
@@ -482,7 +460,6 @@
                     playPromise.catch(function(error) {
                         console.log("Автовоспроизведение заблокировано, ждем взаимодействия");
                         
-                        // Включаем при любом клике на странице
                         document.body.addEventListener('click', function musicStarter() {
                             audio.play().then(function() {
                                 console.log("Музыка запущена после клика");
@@ -497,20 +474,16 @@
                 }
             }, 1000);
             
-            // Запуск отсчета времени
             updateCountdown();
             setInterval(updateCountdown, 1000);
             
-            // Оптимизация для мобильных устройств
             if ('ontouchstart' in window) {
-                // Отключаем hover эффекты на тач-устройствах
                 document.querySelectorAll('*').forEach(el => {
                     el.style.cursor = 'default';
                 });
             }
         });
 
-        // Функция отсчета времени
         function updateCountdown() {
             const eventDate = new Date('July 4, 2026 16:00:00').getTime();
             const now = new Date().getTime();
@@ -532,7 +505,6 @@
             }
         }
         
-        // Оптимизация для iOS
         if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
             document.querySelector('video').setAttribute('playsinline', '');
             document.querySelector('video').setAttribute('webkit-playsinline', '');
